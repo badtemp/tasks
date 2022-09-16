@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html style="background-color: #131417; color: #F8F8F2; border-color: #F8F8F2; font-size: 1.2em;">
+    <head>
+
+    </head>
+
+    <body>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+        <div id="app">
+            <p style="white-space: pre-line;">{{ diamond }}</p>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
+        
+
+
+        <script>
+            const { createApp } = Vue
+
+            let diamond = "";
+            let n = 10;
+
+            function addStar(star){
+                if(star == 0 ) return;
+                diamond+="*";
+                addStar(star - 1)
+            }
+            function makeDiamondTop(n, num){
+                if (n == 0) return;
+                addStar(num - n + 1);
+                diamond+="\n"
+                makeDiamondTop(n - 1, num);
+            }
+            function makeDiamondBot(n, num){
+                if (n == 0) return;
+                addStar(n);
+                diamond+="\n"
+                makeDiamondBot(n - 1, num);
+            }
+            function makeDiamond(n, num){
+                let lines = Math.round(n/2);
+                if(n%2 == 0) { lines+=1 }
+                num = lines;
+                console.log(lines+" "+num)
+                makeDiamondTop(lines, num);
+                if(n%2 == 0) {
+                    diamond=diamond.slice(0,diamond.length-Math.round(n/2)-3);
+                    diamond+="\n"
+                }
+                makeDiamondBot(lines - 1, num);
+            }
+            makeDiamond(n,n);
+
+            createApp({
+                data() {
+                    return {
+                        diamond: diamond
+                    }
+                }
+            }).mount('#app')
+        </script>
+
+        <style>
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 60px;
+                height: 34px; 
+            }
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+              }
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: .4s;
+                transition: .4s;
+                border-radius: 34px;
+              }
+              .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+                border-radius: 50%;
+              }
+              input:checked + .slider {
+                background-color: #2196F3;
+              }
+              input:checked + .slider:before {
+                transform: translateX(26px);
+              }
+        </style>
+    </body>
+</html>

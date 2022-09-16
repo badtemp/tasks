@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>T4</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="app">
+        <img style="width: 300px; height: auto;" src="https://ahseeit.com//king-include/uploads/2021/05/thumb_192259728_1041540776596903_2837319378916194599_n-1608223629.jpg">
+        <custom-form/>
+    </div>
+
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<script>
+        let app = Vue.createApp({})
+
+        app.component('custom-form', {
+            template: `
+                <form @submit.prevent='handleSubmit'>
+                    <custom-input v-model="text"/>
+                    <br/>
+
+                    <select v-model="selected">
+                        <option v-for="option in options" :value="option.value">
+                            {{ option.text }}
+                        </option>
+                    </select>
+                    <p>Selected option: {{ selected }} </p>
+
+                    <br/>
+
+                    <label for="male">Male </label>
+                    <input type="radio" id="male" value="Male" v-model="gender" />
+
+                    <label for="female">Female </label>
+                    <input type="radio" id="female" value="Female" v-model="gender" />
+                    <p>Gender: {{ gender }} </p>
+
+                    <br/>
+
+                    <button> submit form </button>
+                </form>
+            `,
+            components: ['custom-input'],
+            data() {
+                return {
+                    text: '',
+                    gender: 'Female',
+                    selected: "r",
+                    options: [
+                        {text: "red", value: "r"},
+                        {text: "blue", value: "b"},
+                        {text: "white", value: "w"},
+                    ],
+                }
+            },
+            methods: {
+                handleSubmit() {
+                    console.log(".>"+this.text+"| "+this.gender+" "+this.selected)
+                }
+            }
+        })
+        app.component('custom-input', {
+            template: `
+                <p>.> {{ text }} </p>
+                <input v-model="text" type="text" />
+            `,
+            props: ['modelValue'],
+            computed: {
+                modelValue: {
+                    get() {
+                        return this.modelValue;
+                    },
+                    set(value) {
+                        this.$emit('update:modelValue', value);
+                    }
+                }
+            },
+            data() {
+                return {
+                    text: '',
+                }
+            }
+            
+        })
+
+
+        app.mount('#app')
+    </script>
+  </body>
+</html>
